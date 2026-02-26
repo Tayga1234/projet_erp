@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Menu principal -->
+        <menuitem id="medical_root" name="Médical" sequence="10" web_icon="medical,static/description/icon.png"/>
+        
+        <!-- Sous-menu Patients -->
+        <menuitem id="medical_patient_menu" name="Patients" parent="medical_root" sequence="10"/>
+        <menuitem id="medical_patient_menu_action" name="Liste des patients" parent="medical_patient_menu" action="action_medical_patient"/>
+        <menuitem id="medical_patient_menu_kanban" name="Vue Kanban" parent="medical_patient_menu" action="action_medical_patient"/>
+        
+        <!-- Sous-menu Médecins -->
+        <menuitem id="medical_medecin_menu" name="Médecins" parent="medical_root" sequence="20"/>
+        <menuitem id="medical_medecin_menu_action" name="Liste des médecins" parent="medical_medecin_menu" action="action_medical_medecin"/>
+        <menuitem id="medical_medecin_menu_kanban" name="Vue Kanban" parent="medical_medecin_menu" action="action_medical_medecin"/>
+        
+        <!-- Sous-menu Rendez-vous -->
+        <menuitem id="medical_rendezvous_menu" name="Rendez-vous" parent="medical_root" sequence="30"/>
+        <menuitem id="medical_rendezvous_menu_action" name="Liste des rendez-vous" parent="medical_rendezvous_menu" action="action_medical_rendezvous"/>
+        <menuitem id="medical_rendezvous_menu_calendar" name="Calendrier" parent="medical_rendezvous_menu" action="action_medical_rendezvous"/>
+        <menuitem id="medical_rendezvous_menu_kanban" name="Vue Kanban" parent="medical_rendezvous_menu" action="action_medical_rendezvous"/>
+        <menuitem id="medical_rendezvous_menu_graph" name="Statistiques" parent="medical_rendezvous_menu" action="action_medical_rendezvous"/>
+        
+        <!-- Sous-menu Consultations -->
+        <menuitem id="medical_consultation_menu" name="Consultations" parent="medical_root" sequence="40"/>
+        <menuitem id="medical_consultation_menu_action" name="Liste des consultations" parent="medical_consultation_menu" action="action_medical_consultation"/>
+        <menuitem id="medical_consultation_menu_kanban" name="Vue Kanban" parent="medical_consultation_menu" action="action_medical_consultation"/>
+        <menuitem id="medical_consultation_menu_graph" name="Statistiques" parent="medical_consultation_menu" action="action_medical_consultation"/>
+        
+        <!-- Sous-menu Prescriptions -->
+        <menuitem id="medical_prescription_menu" name="Prescriptions" parent="medical_root" sequence="50"/>
+        <menuitem id="medical_prescription_menu_action" name="Liste des prescriptions" parent="medical_prescription_menu" action="action_medical_prescription"/>
+        <menuitem id="medical_prescription_menu_kanban" name="Vue Kanban" parent="medical_prescription_menu" action="action_medical_prescription"/>
+        
+        <!-- Menu Rapports -->
+        <menuitem id="medical_reports_menu" name="Rapports" parent="medical_root" sequence="70"/>
+        <menuitem id="medical_reports_patients" name="Rapport Patients" parent="medical_reports_menu" action="action_medical_patient"/>
+        <menuitem id="medical_reports_medecins" name="Rapport Médecins" parent="medical_reports_menu" action="action_medical_medecin"/>
+        <menuitem id="medical_reports_rendezvous" name="Rapport Rendez-vous" parent="medical_reports_menu" action="action_medical_rendezvous"/>
+        <menuitem id="medical_reports_consultations" name="Rapport Consultations" parent="medical_reports_menu" action="action_medical_consultation"/>
+        <menuitem id="medical_reports_prescriptions" name="Rapport Prescriptions" parent="medical_reports_menu" action="action_medical_prescription"/>
+            
+    </data>
+</odoo>

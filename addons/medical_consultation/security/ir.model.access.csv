@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,name,perm_read,perm_write,perm_create,perm_unlink
+access_medical_patient_user,medical.patient.user,model_medical_patient,base.group_user,1,1,1,0
+access_medical_medecin_user,medical.medecin.user,model_medical_medecin,base.group_user,1,1,1,0
+access_medical_consultation_user,medical.consultation.user,model_medical_consultation,base.group_user,1,1,1,0
+access_medical_prescription_user,medical.prescription.user,model_medical_prescription,base.group_user,1,1,1,0
+access_medical_rendezvous_user,medical.rendezvous.user,model_medical_rendezvous,base.group_user,1,1,1,0

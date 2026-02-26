@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue Liste des Patients -->
+        <record id="view_medical_patient_tree" model="ir.ui.view">
+            <field name="name">medical.patient.tree</field>
+            <field name="model">medical.patient</field>
+            <field name="arch" type="xml">
+                <tree string="Patients" default_order="create_date desc">
+                    <field name="name" string="Nom complet"/>
+                    <field name="age" string="Âge" widget="badge" decoration-success="age &gt;= 18" decoration-warning="age &lt; 18"/>
+                    <field name="groupe_sanguin" string="Groupe Sanguin" widget="badge" decoration-info="groupe_sanguin in ['A', 'AB', 'B']" decoration-warning="groupe_sanguin == 'O'"/>
+                    <field name="medecin_traitant" string="Médecin Traitant" decoration-success="medecin_traitant" decoration-warning="medecin_traitant == False"/>
+                    <field name="partner_id" string="Contact"/>
+                    <field name="create_date" string="Date de Création"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action pour les Patients -->
+        <record id="action_medical_patient" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">medical.patient</field>
+            <field name="view_mode">tree,form,kanban,graph,pivot</field>
+            <field name="view_id" ref="view_medical_patient_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Creez votre premier patient
+                </p>
+                <p>
+                    Gerez les informations medicales des patients
+                </p>
+            </field>
+        </record>
+
+        <!-- Vue Formulaire des Patients -->
+        <record id="view_medical_patient_form" model="ir.ui.view">
+            <field name="name">medical.patient.form</field>
+            <field name="model">medical.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patient">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du patient" required="1"/>
+                            </h1>
+                            <h2>
+                                <field name="prenoms" placeholder="Prenoms du patient"/>
+                            </h2>
+                            <div class="oe_subtitle">
+                                <span class="badge badge-pill badge-primary" decoration-info="groupe_sanguin in ['A', 'AB', 'B']">
+                                    <field name="groupe_sanguin"/>
+                                </span>
+                                <span class="badge badge-pill badge-success" decoration-success="age &gt;= 18" decoration-warning="age &lt; 18">
+                                    <field name="age"/> ans
+                                </span>
+                                <span class="badge badge-pill badge-info" decoration-success="medecin_traitant" decoration-warning="medecin_traitant == False">
+                                    <field name="medecin_traitant"/>
+                                </span>
+                            </div>
+                        </div>
+                        <group>
+                            <group name="info_generales">
+                                <field name="name" required="1"/>
+                                <field name="prenoms"/>
+                                <field name="date_naissance" required="1"/>
+                                <field name="lieu_naissance"/>
+                                <field name="age" readonly="1"/>
+                                <field name="numero_secu"/>
+                                <field name="groupe_sanguin"/>
+                            </group>
+                            <group name="info_medicales">
+                                <field name="medecin_traitant"/>
+                                <field name="antecedents"/>
+                                <field name="allergies"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Historique Medical">
+                                <group>
+                                    <field name="antecedents" widget="text"/>
+                                    <field name="allergies" widget="text"/>
+                                </group>
+                            </page>
+                            <page string="Contact">
+                                <group>
+                                    <field name="partner_id" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue Kanban des Patients -->
+        <record id="view_medical_patient_kanban" model="ir.ui.view">
+            <field name="name">medical.patient.kanban</field>
+            <field name="model">medical.patient</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="prenoms"/>
+                    <field name="age"/>
+                    <field name="groupe_sanguin"/>
+                    <field name="medecin_traitant"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/> <field name="prenoms"/>
+                                        </strong>
+                                        <span class="o_kanban_record_subtitle">
+                                            <span class="badge badge-pill badge-success" decoration-success="age &gt;= 18" decoration-warning="age &lt; 18">
+                                                <field name="age"/> ans
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="badge badge-pill badge-primary" decoration-info="groupe_sanguin in ['A', 'AB', 'B']">
+                                        <field name="groupe_sanguin"/>
+                                    </div>
+                                    <div class="text-muted">
+                                        <i class="fa fa-user-md"/>
+                                        <field name="partner_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>

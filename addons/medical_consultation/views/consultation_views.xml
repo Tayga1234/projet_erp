@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue Liste des Consultations -->
+        <record id="view_medical_consultation_tree" model="ir.ui.view">
+            <field name="name">medical.consultation.tree</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <tree string="Consultations" default_order="date_consultation desc">
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="date_consultation" string="Date" widget="datetime"/>
+                    <field name="motif" string="Motif"/>
+                    <field name="diagnostic" string="Diagnostic" optional="show"/>
+                    <field name="state" string="État" widget="badge"/>
+                    <field name="tarif" string="Tarif (FCFA)" widget="monetary" optional="show"/>
+                    <field name="paiement_effectue" string="Payé" widget="boolean_toggle" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue de Recherche -->
+        <record id="view_medical_consultation_search" model="ir.ui.view">
+            <field name="name">medical.consultation.search</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Consultations">
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="motif" string="Motif"/>
+                    <field name="diagnostic" string="Diagnostic"/>
+                    <field name="date_consultation" string="Date"/>
+                    
+                    <!-- Filtres temporels -->
+                    <filter string="Aujourd'hui" name="today" domain="[('date_consultation', '>=', context_today())]"/>
+                    <filter string="Cette semaine" name="this_week" domain="[('date_consultation', '>=', context_today() - datetime.timedelta(days=7))]"/>
+                    <filter string="Ce mois" name="this_month" domain="[('date_consultation', '>=', context_today().replace(day=1))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par état -->
+                    <filter string="Brouillons" name="draft" domain="[('state', '=', 'brouillon')]"/>
+                    <filter string="En cours" name="in_progress" domain="[('state', '=', 'en_cours')]"/>
+                    <filter string="Terminées" name="finished" domain="[('state', '=', 'terminee')]"/>
+                    <filter string="Annulées" name="cancelled" domain="[('state', '=', 'annulee')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par paiement -->
+                    <filter string="Payées" name="paid" domain="[('paiement_effectue', '=', True)]"/>
+                    <filter string="Non payées" name="unpaid" domain="[('paiement_effectue', '=', False)]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Groupements -->
+                    <group expand="0" string="Grouper par:">
+                        <filter string="État" name="state_group" context="{'group_by': 'state'}"/>
+                        <filter string="Patient" name="patient_group" context="{'group_by': 'patient_id'}"/>
+                        <filter string="Médecin" name="medecin_group" context="{'group_by': 'medecin_id'}"/>
+                        <filter string="Date" name="date_group" context="{'group_by': 'date_consultation:day'}"/>
+                        <filter string="Mois" name="month_group" context="{'group_by': 'date_consultation:month'}"/>
+                        <filter string="Paiement" name="payment_group" context="{'group_by': 'paiement_effectue'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vue Formulaire -->
+        <record id="view_medical_consultation_form" model="ir.ui.view">
+            <field name="name">medical.consultation.form</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <form string="Consultation Médicale">
+                    <header>
+                        <button name="action_start_consultation" string="Commencer" type="object" 
+                                class="btn-warning"
+                                attrs="{'invisible': [('state', '!=', 'brouillon')]}"/>
+                        <button name="action_finish_consultation" string="Terminer" type="object"
+                                class="btn-success"
+                                attrs="{'invisible': [('state', '=', 'terminee')]}"/>
+                        <button name="action_cancel_consultation" string="Annuler" type="object"
+                                class="btn-danger"
+                                attrs="{'invisible': [('state', '=', 'annulee')]}"/>
+                        <button name="action_reset_draft" string="Réinitialiser" type="object"
+                                class="btn-outline-secondary"
+                                attrs="{'invisible': [('state', '=', 'brouillon')]}"/>
+                        <field name="state" widget="statusbar" 
+                               statusbar_visible="brouillon,en_cours,terminee"
+                               options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="patient_id" readonly="1" placeholder="Patient"/>
+                            </h1>
+                            <h3>
+                                <field name="medecin_id" readonly="1" placeholder="Médecin"/>
+                            </h3>
+                        </div>
+                        
+                        <group>
+                            <group name="info_consultation" string="Informations de la Consultation">
+                                <field name="date_consultation" required="1" widget="datetime"/>
+                                <field name="motif" required="1" placeholder="Motif principal de la consultation"/>
+                                <field name="tarif" placeholder="Tarif de la consultation"/>
+                                <field name="paiement_effectue" widget="boolean_toggle"/>
+                            </group>
+                            <group name="details" string="Détails Additionnels">
+                                <field name="diagnostic" placeholder="Diagnostic principal..."/>
+                                <field name="notes" placeholder="Notes importantes..."/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Examen Clinique" name="examen">
+                                <group>
+                                    <field name="symptomes" placeholder="Symptômes observés..."/>
+                                    <field name="examen_clinique" placeholder="Résultats de l'examen clinique..."/>
+                                </group>
+                            </page>
+                            
+                            <page string="Diagnostic et Traitement" name="diagnostic">
+                                <group>
+                                    <field name="diagnostic" placeholder="Diagnostic détaillé..."/>
+                                    <field name="examen_complementaire" placeholder="Examens complémentaires recommandés..."/>
+                                    <field name="traitement" placeholder="Traitement prescrit..."/>
+                                </group>
+                            </page>
+                            
+                            <page string="Prescriptions" name="prescriptions">
+                                <field name="prescription_ids">
+                                    <tree editable="bottom">
+                                        <field name="medicament"/>
+                                        <field name="dosage"/>
+                                        <field name="posologie"/>
+                                        <field name="duree"/>
+                                        <field name="quantite"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue Kanban -->
+        <record id="view_medical_consultation_kanban" model="ir.ui.view">
+            <field name="name">medical.consultation.kanban</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column" default_group_by="state">
+                    <field name="patient_id"/>
+                    <field name="medecin_id"/>
+                    <field name="date_consultation"/>
+                    <field name="motif"/>
+                    <field name="state"/>
+                    <field name="diagnostic"/>
+                    <field name="paiement_effectue"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="patient_id"/>
+                                        </strong>
+                                        <span class="o_kanban_record_subtitle text-muted">
+                                            <field name="medecin_id"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="badge badge-primary mb-2">
+                                        <field name="state"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-calendar"/>
+                                        <field name="date_consultation" widget="datetime"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-stethoscope"/>
+                                        <field name="motif"/>
+                                    </div>
+                                    <div class="text-muted" t-if="record.paiement_effectue.value">
+                                        <i class="fa fa-money"/>
+                                        Payée
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section o_kanban_manage_view">
+                                    <a type="edit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-pencil"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vue Graphique -->
+        <record id="view_medical_consultation_graph" model="ir.ui.view">
+            <field name="name">medical.consultation.graph</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <graph string="Statistiques des Consultations">
+                    <field name="medecin_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="date_consultation" interval="month" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vue Pivot -->
+        <record id="view_medical_consultation_pivot" model="ir.ui.view">
+            <field name="name">medical.consultation.pivot</field>
+            <field name="model">medical.consultation</field>
+            <field name="arch" type="xml">
+                <pivot string="Analyse des Consultations">
+                    <field name="medecin_id" type="row"/>
+                    <field name="patient_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="date_consultation" interval="month" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Action principale -->
+        <record id="action_medical_consultation" model="ir.actions.act_window">
+            <field name="name">Consultations</field>
+            <field name="res_model">medical.consultation</field>
+            <field name="view_mode">tree,form,kanban,graph,pivot</field>
+            <field name="view_id" ref="view_medical_consultation_kanban"/>
+            <field name="search_view_id" ref="view_medical_consultation_search"/>
+            <field name="context">{
+                'default_state': 'brouillon',
+                'default_order': 'date_consultation desc',
+                'group_by': ['state']
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première consultation
+                </p>
+                <p>
+                    Gérez les consultations médicales avec diagnostics et prescriptions
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

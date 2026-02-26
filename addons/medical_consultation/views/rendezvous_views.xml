@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue Liste des Rendez-vous -->
+        <record id="view_medical_rendezvous_tree" model="ir.ui.view">
+            <field name="name">medical.rendezvous.tree</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <tree string="Rendez-vous" default_order="date_heure desc">
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="date_heure" string="Date/Heure" widget="datetime"/>
+                    <field name="duree" string="Durée (min)" widget="float_time"/>
+                    <field name="motif" string="Motif"/>
+                    <field name="state" string="État" widget="badge"/>
+                    <field name="consultation_id" string="Consultation" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue de Recherche -->
+        <record id="view_medical_rendezvous_search" model="ir.ui.view">
+            <field name="name">medical.rendezvous.search</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Rendez-vous">
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="motif" string="Motif"/>
+                    <field name="date_heure" string="Date/Heure"/>
+                    
+                    <!-- Filtres simples -->
+                    <filter string="Aujourd'hui" name="today" domain="[('date_heure', '>=', context_today())]"/>
+                    <filter string="Cette semaine" name="this_week" domain="[('date_heure', '>=', context_today() - datetime.timedelta(days=7))]"/>
+                    <filter string="Ce mois" name="this_month" domain="[('date_heure', '>=', context_today().replace(day=1))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par état -->
+                    <filter string="Brouillons" name="draft" domain="[('state', '=', 'brouillon')]"/>
+                    <filter string="Confirmés" name="confirmed" domain="[('state', '=', 'confirme')]"/>
+                    <filter string="En cours" name="in_progress" domain="[('state', '=', 'en_cours')]"/>
+                    <filter string="Terminés" name="finished" domain="[('state', '=', 'terminee')]"/>
+                    <filter string="Annulés" name="cancelled" domain="[('state', '=', 'annule')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Groupements -->
+                    <group expand="0" string="Grouper par:">
+                        <filter string="État" name="state_group" context="{'group_by': 'state'}"/>
+                        <filter string="Patient" name="patient_group" context="{'group_by': 'patient_id'}"/>
+                        <filter string="Médecin" name="medecin_group" context="{'group_by': 'medecin_id'}"/>
+                        <filter string="Date" name="date_group" context="{'group_by': 'date_heure:day'}"/>
+                        <filter string="Mois" name="month_group" context="{'group_by': 'date_heure:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vue Formulaire -->
+        <record id="view_medical_rendezvous_form" model="ir.ui.view">
+            <field name="name">medical.rendezvous.form</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <form string="Rendez-vous Médical">
+                    <header>
+                        <button name="action_confirm" string="Confirmer" type="object" 
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'brouillon')]}"/>
+                        <button name="action_start" string="Commencer" type="object"
+                                class="btn-warning"
+                                attrs="{'invisible': [('state', '!=', 'confirme')]}"/>
+                        <button name="action_finish" string="Terminer" type="object"
+                                class="btn-success"
+                                attrs="{'invisible': [('state', '!=', 'en_cours')]}"/>
+                        <button name="action_cancel" string="Annuler" type="object"
+                                class="btn-danger"
+                                attrs="{'invisible': [('state', 'in', ['terminee', 'annule'])]}"/>
+                        <field name="state" widget="statusbar" 
+                               statusbar_visible="brouillon,confirme,en_cours,terminee"
+                               options="{'clickable': '1'}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="patient_id" required="1" placeholder="Sélectionner un patient"/>
+                            </h1>
+                            <h3>
+                                <field name="medecin_id" required="1" placeholder="Sélectionner un médecin"/>
+                            </h3>
+                        </div>
+                        
+                        <group>
+                            <group name="info_rendezvous" string="Informations du Rendez-vous">
+                                <field name="date_heure" required="1" widget="datetime"/>
+                                <field name="duree" required="1" widget="float_time"/>
+                                <field name="date_fin" readonly="1" widget="datetime"/>
+                                <field name="motif" required="1" placeholder="Motif principal de la consultation"/>
+                            </group>
+                            <group name="details" string="Détails Additionnels">
+                                <field name="consultation_id" readonly="1"/>
+                                <field name="notes" placeholder="Notes importantes..."/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Description" name="description">
+                                <group>
+                                    <field name="motif" required="1" placeholder="Décrivez en détail le motif de consultation"/>
+                                    <field name="notes" placeholder="Notes importantes, instructions spéciales..."/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue Kanban -->
+        <record id="view_medical_rendezvous_kanban" model="ir.ui.view">
+            <field name="name">medical.rendezvous.kanban</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column" default_group_by="state">
+                    <field name="patient_id"/>
+                    <field name="medecin_id"/>
+                    <field name="date_heure"/>
+                    <field name="duree"/>
+                    <field name="motif"/>
+                    <field name="state"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="patient_id"/>
+                                        </strong>
+                                        <span class="o_kanban_record_subtitle text-muted">
+                                            <field name="medecin_id"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="badge badge-primary mb-2">
+                                        <field name="state"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-clock-o"/>
+                                        <field name="date_heure" widget="datetime"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-hourglass-half"/>
+                                        <field name="duree"/> min
+                                    </div>
+                                    <div class="o_text_overflow mb-2">
+                                        <field name="motif"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section o_kanban_manage_view">
+                                    <a type="edit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-pencil"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vue Calendrier -->
+        <record id="view_medical_rendezvous_calendar" model="ir.ui.view">
+            <field name="name">medical.rendezvous.calendar</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <calendar string="Calendrier des Rendez-vous" 
+                          date_start="date_heure" 
+                          date_stop="date_fin" 
+                          color="patient_id"
+                          event_open_popup="true"
+                          quick_add="true"
+                          mode="week"
+                          scales="day,week,month,year">
+                    <field name="patient_id"/>
+                    <field name="medecin_id"/>
+                    <field name="motif"/>
+                    <field name="state"/>
+                    <field name="duree"/>
+                    <field name="notes"/>
+                </calendar>
+            </field>
+        </record>
+
+        <!-- Vue Graphique -->
+        <record id="view_medical_rendezvous_graph" model="ir.ui.view">
+            <field name="name">medical.rendezvous.graph</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <graph string="Statistiques des Rendez-vous">
+                    <field name="medecin_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="date_heure" interval="month" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vue Pivot -->
+        <record id="view_medical_rendezvous_pivot" model="ir.ui.view">
+            <field name="name">medical.rendezvous.pivot</field>
+            <field name="model">medical.rendezvous</field>
+            <field name="arch" type="xml">
+                <pivot string="Analyse des Rendez-vous">
+                    <field name="medecin_id" type="row"/>
+                    <field name="patient_id" type="row"/>
+                    <field name="state" type="col"/>
+                    <field name="date_heure" interval="month" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Action principale -->
+        <record id="action_medical_rendezvous" model="ir.actions.act_window">
+            <field name="name">Rendez-vous</field>
+            <field name="res_model">medical.rendezvous</field>
+            <field name="view_mode">tree,form,kanban,calendar,graph,pivot</field>
+            <field name="view_id" ref="view_medical_rendezvous_kanban"/>
+            <field name="search_view_id" ref="view_medical_rendezvous_search"/>
+            <field name="context">{
+                'default_state': 'brouillon',
+                'default_order': 'date_heure desc',
+                'group_by': ['state']
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier rendez-vous
+                </p>
+                <p>
+                    Gérez les rendez-vous médicaux avec un système complet de suivi
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

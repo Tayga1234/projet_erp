@@ -1,0 +1,1496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Séquences -->
+        <record id="sequence_consultation" model="ir.sequence">
+            <field name="name">Consultation Médicale</field>
+            <field name="code">medical.consultation</field>
+            <field name="prefix">CONS/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+        </record>
+        
+        <record id="sequence_prescription" model="ir.sequence">
+            <field name="name">Prescription Médicale</field>
+            <field name="code">medical.prescription</field>
+            <field name="prefix">PRES/</field>
+            <field name="number_next">1</field>
+        </record>
+        
+        <record id="sequence_rendezvous" model="ir.sequence">
+            <field name="name">Rendez-vous Médical</field>
+            <field name="code">medical.rendezvous</field>
+            <field name="prefix">RDV/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+        </record>
+        
+        <!-- 2 Médecins -->
+        <record id="partner_medecin_1" model="res.partner">
+            <field name="name">Dr Ouédraogo Jean</field>
+            <field name="phone">22612345678</field>
+            <field name="email">j.ouedraogo@medical.bf</field>
+            <field name="street">15 Rue de la Santé</field>
+            <field name="city">Ouagadougou</field>
+            <field name="zip">01</field>
+        </record>
+        
+        <record id="medecin_1" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_1"/>
+            <field name="name">Ouédraogo</field>
+            <field name="prenoms">Jean</field>
+            <field name="specialite">generaliste</field>
+            <field name="numero_rpps">10001234567</field>
+            <field name="numero_adeli">123456789</field>
+            <field name="tarif_consultation">5000</field>
+        </record>
+        
+        <record id="partner_medecin_2" model="res.partner">
+            <field name="name">Dr Konaté Aminata</field>
+            <field name="phone">22612345679</field>
+            <field name="email">a.konate@medical.bf</field>
+            <field name="street">22 Avenue de la Médecine</field>
+            <field name="city">Bobo-Dioulasso</field>
+            <field name="zip">02</field>
+        </record>
+        
+        <record id="medecin_2" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_2"/>
+            <field name="name">Konaté</field>
+            <field name="prenoms">Aminata</field>
+            <field name="specialite">cardiologue</field>
+            <field name="numero_rpps">20001234568</field>
+            <field name="numero_adeli">987654321</field>
+            <field name="tarif_consultation">6000</field>
+        </record>
+        
+                <!-- 10 Médecins supplémentaires (pour en avoir 12 au total) -->
+        <record id="partner_medecin_3" model="res.partner">
+            <field name="name">Dr Traoré Paul</field>
+            <field name="phone">22612345680</field>
+            <field name="email">p.traore@medical.bf</field>
+            <field name="street">8 Boulevard de l'Hôpital</field>
+            <field name="city">Koudougou</field>
+            <field name="zip">03</field>
+        </record>
+        
+        <record id="medecin_3" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_3"/>
+            <field name="name">Traoré</field>
+            <field name="prenoms">Paul</field>
+            <field name="specialite">pediatre</field>
+            <field name="numero_rpps">30001234569</field>
+            <field name="numero_adeli">456789123</field>
+            <field name="tarif_consultation">4500</field>
+        </record>
+        
+        <record id="partner_medecin_4" model="res.partner">
+            <field name="name">Dr Sawadogo Marie</field>
+            <field name="phone">22612345681</field>
+            <field name="email">m.sawadogo@medical.bf</field>
+            <field name="street">33 Rue des Enfants</field>
+            <field name="city">Ouahigouya</field>
+            <field name="zip">04</field>
+        </record>
+        
+        <record id="medecin_4" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_4"/>
+            <field name="name">Sawadogo</field>
+            <field name="prenoms">Marie</field>
+            <field name="specialite">gynecologue</field>
+            <field name="numero_rpps">40001234570</field>
+            <field name="numero_adeli">789123456</field>
+            <field name="tarif_consultation">5500</field>
+        </record>
+        
+        <record id="partner_medecin_5" model="res.partner">
+            <field name="name">Dr Zongo François</field>
+            <field name="phone">22612345682</field>
+            <field name="email">f.zongo@medical.bf</field>
+            <field name="street">12 Rue de la Paix</field>
+            <field name="city">Kaya</field>
+            <field name="zip">05</field>
+        </record>
+        
+        <record id="medecin_5" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_5"/>
+            <field name="name">Zongo</field>
+            <field name="prenoms">François</field>
+            <field name="specialite">dermatologue</field>
+            <field name="numero_rpps">50001234571</field>
+            <field name="numero_adeli">321654987</field>
+            <field name="tarif_consultation">7000</field>
+        </record>
+        
+        <record id="partner_medecin_6" model="res.partner">
+            <field name="name">Dr Yaméogo Adama</field>
+            <field name="phone">22612345683</field>
+            <field name="email">a.yameogo@medical.bf</field>
+            <field name="street">45 Avenue de la Santé</field>
+            <field name="city">Bobo-Dioulasso</field>
+            <field name="zip">06</field>
+        </record>
+        
+        <record id="medecin_6" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_6"/>
+            <field name="name">Yaméogo</field>
+            <field name="prenoms">Adama</field>
+            <field name="specialite">ophtalmologue</field>
+            <field name="numero_rpps">60001234572</field>
+            <field name="numero_adeli">654987321</field>
+            <field name="tarif_consultation">8000</field>
+        </record>
+        
+        <record id="partner_medecin_7" model="res.partner">
+            <field name="name">Dr Kaboré Moussa</field>
+            <field name="phone">22612345684</field>
+            <field name="email">m.kabore@medical.bf</field>
+            <field name="street">78 Rue du Médecin</field>
+            <field name="city">Ouagadougou</field>
+            <field name="zip">07</field>
+        </record>
+        
+        <record id="medecin_7" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_7"/>
+            <field name="name">Kaboré</field>
+            <field name="prenoms">Moussa</field>
+            <field name="specialite">orthopediste</field>
+            <field name="numero_rpps">70001234573</field>
+            <field name="numero_adeli">987321654</field>
+            <field name="tarif_consultation">6500</field>
+        </record>
+        
+        <record id="partner_medecin_8" model="res.partner">
+            <field name="name">Dr Ouattara Awa</field>
+            <field name="phone">22612345685</field>
+            <field name="email">a.ouattara@medical.bf</field>
+            <field name="street">23 Boulevard des Spécialistes</field>
+            <field name="city">Koudougou</field>
+            <field name="zip">08</field>
+        </record>
+        
+        <record id="medecin_8" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_8"/>
+            <field name="name">Ouattara</field>
+            <field name="prenoms">Awa</field>
+            <field name="specialite">neurologue</field>
+            <field name="numero_rpps">80001234574</field>
+            <field name="numero_adeli">147258369</field>
+            <field name="tarif_consultation">9000</field>
+        </record>
+        
+        <record id="partner_medecin_9" model="res.partner">
+            <field name="name">Dr Diallo Bintou</field>
+            <field name="phone">22612345686</field>
+            <field name="email">b.diallo@medical.bf</field>
+            <field name="street">56 Rue de la Guérison</field>
+            <field name="city">Tenkodogo</field>
+            <field name="zip">09</field>
+        </record>
+        
+        <record id="medecin_9" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_9"/>
+            <field name="name">Diallo</field>
+            <field name="prenoms">Bintou</field>
+            <field name="specialite">endocrinologue</field>
+            <field name="numero_rpps">90001234575</field>
+            <field name="numero_adeli">258369147</field>
+            <field name="tarif_consultation">7500</field>
+        </record>
+        
+        <record id="partner_medecin_10" model="res.partner">
+            <field name="name">Dr Sanogo Karim</field>
+            <field name="phone">22612345687</field>
+            <field name="email">k.sanogo@medical.bf</field>
+            <field name="street">34 Avenue du Traitement</field>
+            <field name="city">Fada N'Gourma</field>
+            <field name="zip">10</field>
+        </record>
+        
+        <record id="medecin_10" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_10"/>
+            <field name="name">Sanogo</field>
+            <field name="prenoms">Karim</field>
+            <field name="specialite">radiologue</field>
+            <field name="numero_rpps">100001234576</field>
+            <field name="numero_adeli">369147258</field>
+            <field name="tarif_consultation">10000</field>
+        </record>
+        
+        <record id="partner_medecin_11" model="res.partner">
+            <field name="name">Dr Bamba Fatoumata</field>
+            <field name="phone">22612345688</field>
+            <field name="email">f.bamba@medical.bf</field>
+            <field name="street">67 Rue du Diagnostic</field>
+            <field name="city">Dédougou</field>
+            <field name="zip">11</field>
+        </record>
+        
+        <record id="medecin_11" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_11"/>
+            <field name="name">Bamba</field>
+            <field name="prenoms">Fatoumata</field>
+            <field name="specialite">anesthesiste</field>
+            <field name="numero_rpps">110001234577</field>
+            <field name="numero_adeli">741852963</field>
+            <field name="tarif_consultation">5500</field>
+        </record>
+        
+        <record id="partner_medecin_12" model="res.partner">
+            <field name="name">Dr Compaoré Salif</field>
+            <field name="phone">22612345689</field>
+            <field name="email">s.compaore@medical.bf</field>
+            <field name="street">89 Boulevard de la Chirurgie</field>
+            <field name="city">Ouahigouya</field>
+            <field name="zip">12</field>
+        </record>
+        
+        <record id="medecin_12" model="medical.medecin">
+            <field name="partner_id" ref="partner_medecin_12"/>
+            <field name="name">Compaoré</field>
+            <field name="prenoms">Salif</field>
+            <field name="specialite">chirurgien</field>
+            <field name="numero_rpps">120001234578</field>
+            <field name="numero_adeli">852963741</field>
+            <field name="tarif_consultation">12000</field>
+        </record>
+
+
+        <!-- 15 Patients -->
+        <record id="partner_patient_1" model="res.partner">
+            <field name="name">Kaboré Pierre</field>
+            <field name="phone">22612345683</field>
+            <field name="email">p.kabore@email.bf</field>
+            <field name="street">5 Rue des Écoles</field>
+            <field name="city">Ouagadougou</field>
+            <field name="zip">01</field>
+        </record>
+        
+        <record id="patient_1" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_1"/>
+            <field name="name">Kaboré</field>
+            <field name="prenoms">Pierre</field>
+            <field name="date_naissance">1985-03-15</field>
+            <field name="lieu_naissance">Ouagadougou</field>
+            <field name="numero_secu">1850312345678</field>
+            <field name="groupe_sanguin">A+</field>
+            <field name="antecedents">Hypertension légère</field>
+            <field name="allergies">Arachides</field>
+            <field name="medecin_traitant" ref="medecin_1"/>
+        </record>
+
+                <!-- 13 Patients supplémentaires (pour en avoir 15 au total) -->
+        <record id="partner_patient_3" model="res.partner">
+            <field name="name">Paré Jean</field>
+            <field name="phone">22612345685</field>
+            <field name="email">j.pare@email.bf</field>
+            <field name="street">25 Rue de la République</field>
+            <field name="city">Koudougou</field>
+            <field name="zip">03</field>
+        </record>
+        
+        <record id="patient_3" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_3"/>
+            <field name="name">Paré</field>
+            <field name="prenoms">Jean</field>
+            <field name="date_naissance">1978-11-30</field>
+            <field name="lieu_naissance">Kaya</field>
+            <field name="numero_secu">1781101234567</field>
+            <field name="groupe_sanguin">B+</field>
+            <field name="antecedents">Diabète type 2</field>
+            <field name="allergies">Aucune</field>
+            <field name="medecin_traitant" ref="medecin_1"/>
+        </record>
+        
+        <record id="partner_patient_4" model="res.partner">
+            <field name="name">Rouamba Sophie</field>
+            <field name="phone">22612345686</field>
+            <field name="email">s.rouamba@email.bf</field>
+            <field name="street">18 Rue des Lilas</field>
+            <field name="city">Ouahigouya</field>
+            <field name="zip">04</field>
+        </record>
+        
+        <record id="patient_4" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_4"/>
+            <field name="name">Rouamba</field>
+            <field name="prenoms">Sophie</field>
+            <field name="date_naissance">1995-05-12</field>
+            <field name="lieu_naissance">Koudougou</field>
+            <field name="numero_secu">1950512345678</field>
+            <field name="groupe_sanguin">AB+</field>
+            <field name="antecedents">Asthme</field>
+            <field name="allergies">Acariens</field>
+            <field name="medecin_traitant" ref="medecin_3"/>
+        </record>
+        
+        <record id="partner_patient_5" model="res.partner">
+            <field name="name">Mara Luc</field>
+            <field name="phone">22612345687</field>
+            <field name="email">l.mara@email.bf</field>
+            <field name="street">7 Place de la Mairie</field>
+            <field name="city">Tenkodogo</field>
+            <field name="zip">06</field>
+        </record>
+        
+        <record id="patient_5" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_5"/>
+            <field name="name">Mara</field>
+            <field name="prenoms">Luc</field>
+            <field name="date_naissance">1988-09-25</field>
+            <field name="lieu_naissance">Tenkodogo</field>
+            <field name="numero_secu">1880912345678</field>
+            <field name="groupe_sanguin">A-</field>
+            <field name="antecedents">Migraines</field>
+            <field name="allergies">Arachides</field>
+            <field name="medecin_traitant" ref="medecin_4"/>
+        </record>
+        
+        <record id="partner_patient_6" model="res.partner">
+            <field name="name">Lefebvre Claire</field>
+            <field name="phone">22612345688</field>
+            <field name="email">c.lefebvre@email.bf</field>
+            <field name="street">123 Avenue de la Mer</field>
+            <field name="city">Dédougou</field>
+            <field name="zip">07</field>
+        </record>
+        
+        <record id="patient_6" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_6"/>
+            <field name="name">Lefebvre</field>
+            <field name="prenoms">Claire</field>
+            <field name="date_naissance">2001-02-14</field>
+            <field name="lieu_naissance">Dédougou</field>
+            <field name="numero_secu">2010212345678</field>
+            <field name="groupe_sanguin">O+</field>
+            <field name="antecedents">Aucun</field>
+            <field name="allergies">Lactose</field>
+            <field name="medecin_traitant" ref="medecin_2"/>
+        </record>
+        
+        <record id="partner_patient_7" model="res.partner">
+            <field name="name">Gnignima Marc</field>
+            <field name="phone">22612345689</field>
+            <field name="email">m.gnignima@email.bf</field>
+            <field name="street">45 Rue de la Forêt</field>
+            <field name="city">Fada N'Gourma</field>
+            <field name="zip">08</field>
+        </record>
+        
+        <record id="patient_7" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_7"/>
+            <field name="name">Gnignima</field>
+            <field name="prenoms">Marc</field>
+            <field name="date_naissance">1992-08-08</field>
+            <field name="lieu_naissance">Fada N'Gourma</field>
+            <field name="numero_secu">1920812345678</field>
+            <field name="groupe_sanguin">B+</field>
+            <field name="antecedents">Allergies sévères</field>
+            <field name="allergies">Noix, arachides</field>
+            <field name="medecin_traitant" ref="medecin_5"/>
+        </record>
+        
+        <record id="partner_patient_8" model="res.partner">
+            <field name="name">Nébié Julie</field>
+            <field name="phone">22612345690</field>
+            <field name="email">j.nebie@email.bf</field>
+            <field name="street">89 Rue de la Liberté</field>
+            <field name="city">Manga</field>
+            <field name="zip">09</field>
+        </record>
+        
+        <record id="patient_8" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_8"/>
+            <field name="name">Nébié</field>
+            <field name="prenoms">Julie</field>
+            <field name="date_naissance">1976-04-03</field>
+            <field name="lieu_naissance">Gaoua</field>
+            <field name="numero_secu">1760412345678</field>
+            <field name="groupe_sanguin">A+</field>
+            <field name="antecedents">Cholestérol</field>
+            <field name="allergies">Gluten</field>
+            <field name="medecin_traitant" ref="medecin_3"/>
+        </record>
+        
+        <record id="partner_patient_9" model="res.partner">
+            <field name="name">Yameogo Thomas</field>
+            <field name="phone">22612345691</field>
+            <field name="email">t.yameogo@email.bf</field>
+            <field name="street">156 Avenue des Nations</field>
+            <field name="city">Ouagadougou</field>
+            <field name="zip">10</field>
+        </record>
+        
+        <record id="patient_9" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_9"/>
+            <field name="name">Yameogo</field>
+            <field name="prenoms">Thomas</field>
+            <field name="date_naissance">1989-12-15</field>
+            <field name="lieu_naissance">Ouagadougou</field>
+            <field name="numero_secu">1891212345678</field>
+            <field name="groupe_sanguin">O-</field>
+            <field name="antecedents">Hypertension</field>
+            <field name="allergies">Pollens</field>
+            <field name="medecin_traitant" ref="medecin_4"/>
+        </record>
+        
+        <record id="partner_patient_10" model="res.partner">
+            <field name="name">Sankara Fatoumata</field>
+            <field name="phone">22612345692</field>
+            <field name="email">f.sankara@email.bf</field>
+            <field name="street">200 Route de l'Amitié</field>
+            <field name="city">Banfora</field>
+            <field name="zip">11</field>
+        </record>
+        
+        <record id="patient_10" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_10"/>
+            <field name="name">Sankara</field>
+            <field name="prenoms">Fatoumata</field>
+            <field name="date_naissance">1993-06-20</field>
+            <field name="lieu_naissance">Banfora</field>
+            <field name="numero_secu">1930612345678</field>
+            <field name="groupe_sanguin">B-</field>
+            <field name="antecedents">Migraines chroniques</field>
+            <field name="allergies">Poussières</field>
+            <field name="medecin_traitant" ref="medecin_5"/>
+        </record>
+        
+        <record id="partner_patient_11" model="res.partner">
+            <field name="name">Kaboré Aïssa</field>
+            <field name="phone">22612345693</field>
+            <field name="email">a.kabore@email.bf</field>
+            <field name="street">34 Rue du Marché</field>
+            <field name="city">Koudougou</field>
+            <field name="zip">12</field>
+        </record>
+        
+        <record id="patient_11" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_11"/>
+            <field name="name">Kaboré</field>
+            <field name="prenoms">Aïssa</field>
+            <field name="date_naissance">1987-08-17</field>
+            <field name="lieu_naissance">Koudougou</field>
+            <field name="numero_secu">1870812345678</field>
+            <field name="groupe_sanguin">O+</field>
+            <field name="antecedents">Aucun</field>
+            <field name="allergies">Fruits de mer</field>
+            <field name="medecin_traitant" ref="medecin_1"/>
+        </record>
+        
+        <record id="partner_patient_12" model="res.partner">
+            <field name="name">Zongo Mahamadi</field>
+            <field name="phone">22612345694</field>
+            <field name="email">m.zongo@email.bf</field>
+            <field name="street">67 Avenue du Sahel</field>
+            <field name="city">Dori</field>
+            <field name="zip">13</field>
+        </record>
+        
+        <record id="patient_12" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_12"/>
+            <field name="name">Zongo</field>
+            <field name="prenoms">Mahamadi</field>
+            <field name="date_naissance">1982-01-25</field>
+            <field name="lieu_naissance">Dori</field>
+            <field name="numero_secu">1820112345678</field>
+            <field name="groupe_sanguin">A+</field>
+            <field name="antecedents">Ulcère</field>
+            <field name="allergies">Aucune</field>
+            <field name="medecin_traitant" ref="medecin_2"/>
+        </record>
+        
+        <record id="partner_patient_13" model="res.partner">
+            <field name="name">Bassané Aminata</field>
+            <field name="phone">22612345695</field>
+            <field name="email">a.bassane@email.bf</field>
+            <field name="street">12 Rue du Fleuve</field>
+            <field name="city">Boromo</field>
+            <field name="zip">14</field>
+        </record>
+        
+        <record id="patient_13" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_13"/>
+            <field name="name">Bassané</field>
+            <field name="prenoms">Aminata</field>
+            <field name="date_naissance">1996-11-08</field>
+            <field name="lieu_naissance">Boromo</field>
+            <field name="numero_secu">1961112345678</field>
+            <field name="groupe_sanguin">B+</field>
+            <field name="antecedents">Anémie</field>
+            <field name="allergies">Pollen</field>
+            <field name="medecin_traitant" ref="medecin_3"/>
+        </record>
+        
+        <record id="partner_patient_14" model="res.partner">
+            <field name="name">Sawadogo Karim</field>
+            <field name="phone">22612345696</field>
+            <field name="email">k.sawadogo@email.bf</field>
+            <field name="street">89 Boulevard du Progrès</field>
+            <field name="city">Kaya</field>
+            <field name="zip">15</field>
+        </record>
+        
+        <record id="patient_14" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_14"/>
+            <field name="name">Sawadogo</field>
+            <field name="prenoms">Karim</field>
+            <field name="date_naissance">1991-06-30</field>
+            <field name="lieu_naissance">Kaya</field>
+            <field name="numero_secu">1910612345678</field>
+            <field name="groupe_sanguin">AB-</field>
+            <field name="antecedents">Asthme léger</field>
+            <field name="allergies">Acariens</field>
+            <field name="medecin_traitant" ref="medecin_4"/>
+        </record>
+        
+        <record id="partner_patient_15" model="res.partner">
+            <field name="name">Traoré Fatou</field>
+            <field name="phone">22612345697</field>
+            <field name="email">f.traore@email.bf</field>
+            <field name="street">45 Rue du Savoir</field>
+            <field name="city">Ouagadougou</field>
+            <field name="zip">16</field>
+        </record>
+        
+        <record id="patient_15" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_15"/>
+            <field name="name">Traoré</field>
+            <field name="prenoms">Fatou</field>
+            <field name="date_naissance">1984-03-22</field>
+            <field name="lieu_naissance">Ouagadougou</field>
+            <field name="numero_secu">1840312345678</field>
+            <field name="groupe_sanguin">O-</field>
+            <field name="antecedents">Diabète gestationnel</field>
+            <field name="allergies">Lactose</field>
+            <field name="medecin_traitant" ref="medecin_5"/>
+        </record>
+        
+        <record id="partner_patient_2" model="res.partner">
+            <field name="name">Bambara Marie</field>
+            <field name="phone">22612345684</field>
+            <field name="email">m.bambara@email.bf</field>
+            <field name="street">12 Boulevard Victor Hugo</field>
+            <field name="city">Bobo-Dioulasso</field>
+            <field name="zip">02</field>
+        </record>
+        
+        <record id="patient_2" model="medical.patient">
+            <field name="partner_id" ref="partner_patient_2"/>
+            <field name="name">Bambara</field>
+            <field name="prenoms">Marie</field>
+            <field name="date_naissance">1990-07-22</field>
+            <field name="lieu_naissance">Bobo-Dioulasso</field>
+            <field name="numero_secu">2900712345678</field>
+            <field name="groupe_sanguin">O+</field>
+            <field name="antecedents">Aucun</field>
+            <field name="allergies">Pollens</field>
+            <field name="medecin_traitant" ref="medecin_2"/>
+        </record>
+        
+        <!-- 3 Rendez-vous -->
+        <record id="rendezvous_1" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_1"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_heure">2026-03-01 09:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation de contrôle</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_2" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_2"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_heure">2026-03-02 10:30:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Consultation cardiologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_3" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_1"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_heure">2026-03-03 14:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation pédiatrique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+                <!-- 25 Rendez-vous supplémentaires (pour en avoir 28 au total) -->
+        <record id="rendezvous_4" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_3"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_heure">2026-03-04 16:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation pédiatrique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_5" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_4"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_heure">2026-03-05 17:00:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Consultation gynécologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_6" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_5"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_heure">2026-03-06 08:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation dermatologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_7" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_6"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_heure">2026-03-06 09:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Suivi hypertension</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_8" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_7"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_heure">2026-03-06 10:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Suivi diabète</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_9" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_8"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_heure">2026-03-06 11:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation allergologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_10" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_9"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_heure">2026-03-06 14:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation dermatologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_11" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_heure">2026-03-06 15:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation générale</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_12" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_11"/>
+            <field name="medecin_id" ref="medecin_6"/>
+            <field name="date_heure">2026-03-07 08:00:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Examen ophtalmologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_13" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_12"/>
+            <field name="medecin_id" ref="medecin_7"/>
+            <field name="date_heure">2026-03-07 09:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation orthopédique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_14" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_13"/>
+            <field name="medecin_id" ref="medecin_8"/>
+            <field name="date_heure">2026-03-07 10:00:00</field>
+            <field name="duree">60</field>
+            <field name="motif">Consultation neurologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_15" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_14"/>
+            <field name="medecin_id" ref="medecin_9"/>
+            <field name="date_heure">2026-03-07 11:00:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Consultation endocrinologique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_16" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_15"/>
+            <field name="medecin_id" ref="medecin_10"/>
+            <field name="date_heure">2026-03-07 14:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Radiographie thoracique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_17" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_1"/>
+            <field name="medecin_id" ref="medecin_11"/>
+            <field name="date_heure">2026-03-07 15:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Consultation anesthésique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_18" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_2"/>
+            <field name="medecin_id" ref="medecin_12"/>
+            <field name="date_heure">2026-03-07 16:00:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Consultation chirurgicale</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_19" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_3"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_heure">2026-03-08 08:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Contrôle pédiatrique</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_20" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_4"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_heure">2026-03-08 09:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Suivi cardiaque</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_21" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_5"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_heure">2026-03-08 10:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Vaccination enfant</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_22" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_6"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_heure">2026-03-08 11:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Suivi grossesse</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_23" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_7"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_heure">2026-03-08 14:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Examen de peau</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_24" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_8"/>
+            <field name="medecin_id" ref="medecin_6"/>
+            <field name="date_heure">2026-03-08 15:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Examen de vue</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_25" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_9"/>
+            <field name="medecin_id" ref="medecin_7"/>
+            <field name="date_heure">2026-03-08 16:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Douleur articulaire</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_26" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="medecin_id" ref="medecin_8"/>
+            <field name="date_heure">2026-03-09 08:00:00</field>
+            <field name="duree">60</field>
+            <field name="motif">Maux de tête fréquents</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_27" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_11"/>
+            <field name="medecin_id" ref="medecin_9"/>
+            <field name="date_heure">2026-03-09 09:00:00</field>
+            <field name="duree">45</field>
+            <field name="motif">Problèmes thyroïde</field>
+            <field name="state">confirme</field>
+        </record>
+        
+        <record id="rendezvous_28" model="medical.rendezvous">
+            <field name="patient_id" ref="patient_12"/>
+            <field name="medecin_id" ref="medecin_10"/>
+            <field name="date_heure">2026-03-09 10:00:00</field>
+            <field name="duree">30</field>
+            <field name="motif">Radio abdomen</field>
+            <field name="state">confirme</field>
+        </record>
+
+
+        <!-- 2 Consultations -->
+        <record id="consultation_1" model="medical.consultation">
+            <field name="patient_id" ref="patient_1"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Contrôle annuel</field>
+            <field name="symptomes">Patient se plaint de maux de tête occasionnels</field>
+            <field name="diagnostic">Bon état général</field>
+            <field name="traitement">Repos et hydratation</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_2" model="medical.consultation">
+            <field name="patient_id" ref="patient_2"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Suivi cardiologique</field>
+            <field name="symptomes">Palpitations à l'effort</field>
+            <field name="diagnostic">Tachycardie légère</field>
+            <field name="traitement">Bêtabloquants à faible dose</field>
+            <field name="state">terminee</field>
+        </record>
+
+                <!-- 28 Consultations (une pour chaque rendez-vous) -->
+        <record id="consultation_3" model="medical.consultation">
+            <field name="patient_id" ref="patient_3"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation pédiatrique</field>
+            <field name="symptomes">Fièvre et toux depuis 2 jours</field>
+            <field name="diagnostic">Rhinopharyngite virale</field>
+            <field name="traitement">Paracétamol sirop</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_4" model="medical.consultation">
+            <field name="patient_id" ref="patient_4"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation gynécologique</field>
+            <field name="symptomes">Douleurs pelviennes</field>
+            <field name="diagnostic">Endométriose</field>
+            <field name="traitement">Anti-inflammatoires</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_5" model="medical.consultation">
+            <field name="patient_id" ref="patient_5"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation dermatologique</field>
+            <field name="symptomes">Éruptions cutanées</field>
+            <field name="diagnostic">Eczéma</field>
+            <field name="traitement">Crème à la cortisone</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_6" model="medical.consultation">
+            <field name="patient_id" ref="patient_6"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Suivi hypertension</field>
+            <field name="symptomes">Tension artérielle élevée</field>
+            <field name="diagnostic">HTA grade 2</field>
+            <field name="traitement">IEC inhibiteurs</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_7" model="medical.consultation">
+            <field name="patient_id" ref="patient_7"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Suivi diabète</field>
+            <field name="symptomes">Glycémie élevée</field>
+            <field name="diagnostic">Diabète déséquilibré</field>
+            <field name="traitement">Metformine</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_8" model="medical.consultation">
+            <field name="patient_id" ref="patient_8"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation allergologique</field>
+            <field name="symptomes">Crise d'asthme</field>
+            <field name="diagnostic">Asthme allergique</field>
+            <field name="traitement">Ventoline + corticoïdes</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_9" model="medical.consultation">
+            <field name="patient_id" ref="patient_9"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation dermatologique</field>
+            <field name="symptomes">Psoriasis en poussée</field>
+            <field name="diagnostic">Psoriasis modérée</field>
+            <field name="traitement">Photothérapie</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_10" model="medical.consultation">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation générale</field>
+            <field name="symptomes">Fatigue chronique</field>
+            <field name="diagnostic">Anémie ferriprive</field>
+            <field name="traitement">Supplémentation en fer</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_11" model="medical.consultation">
+            <field name="patient_id" ref="patient_11"/>
+            <field name="medecin_id" ref="medecin_6"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Examen ophtalmologique</field>
+            <field name="symptomes">Vision floue</field>
+            <field name="diagnostic">Myopie légère</field>
+            <field name="traitement">Lunettes correctrices</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_12" model="medical.consultation">
+            <field name="patient_id" ref="patient_12"/>
+            <field name="medecin_id" ref="medecin_7"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation orthopédique</field>
+            <field name="symptomes">Douleur genou</field>
+            <field name="diagnostic">Lésion méniscale</field>
+            <field name="traitement">Kinésithérapie</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_13" model="medical.consultation">
+            <field name="patient_id" ref="patient_13"/>
+            <field name="medecin_id" ref="medecin_8"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation neurologique</field>
+            <field name="symptomes">Maux de tête fréquents</field>
+            <field name="diagnostic">Migraine chronique</field>
+            <field name="traitement">Triptans</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_14" model="medical.consultation">
+            <field name="patient_id" ref="patient_14"/>
+            <field name="medecin_id" ref="medecin_9"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation endocrinologique</field>
+            <field name="symptomes">Prise de poids</field>
+            <field name="diagnostic">Hypothyroïdie</field>
+            <field name="traitement">Levothyroxine</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_15" model="medical.consultation">
+            <field name="patient_id" ref="patient_15"/>
+            <field name="medecin_id" ref="medecin_10"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Radiographie thoracique</field>
+            <field name="symptomes">Toux persistante</field>
+            <field name="diagnostic">Bronchite chronique</field>
+            <field name="traitement">Antibiotiques</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_16" model="medical.consultation">
+            <field name="patient_id" ref="patient_1"/>
+            <field name="medecin_id" ref="medecin_11"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation anesthésique</field>
+            <field name="symptomes">Évaluation pré-opératoire</field>
+            <field name="diagnostic">Bon candidat</field>
+            <field name="traitement">Anesthésie générale</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_17" model="medical.consultation">
+            <field name="patient_id" ref="patient_2"/>
+            <field name="medecin_id" ref="medecin_12"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation chirurgicale</field>
+            <field name="symptomes">Douleur abdominale</field>
+            <field name="diagnostic">Appendicite</field>
+            <field name="traitement">Chirurgie</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_18" model="medical.consultation">
+            <field name="patient_id" ref="patient_3"/>
+            <field name="medecin_id" ref="medecin_1"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Contrôle pédiatrique</field>
+            <field name="symptomes">Croissance normale</field>
+            <field name="diagnostic">Bon développement</field>
+            <field name="traitement">Vaccins à jour</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_19" model="medical.consultation">
+            <field name="patient_id" ref="patient_4"/>
+            <field name="medecin_id" ref="medecin_2"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Suivi cardiaque</field>
+            <field name="symptomes">Palpitations</field>
+            <field name="diagnostic">Arythmie bénigne</field>
+            <field name="traitement">Bêtabloquants</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_20" model="medical.consultation">
+            <field name="patient_id" ref="patient_5"/>
+            <field name="medecin_id" ref="medecin_3"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Vaccination enfant</field>
+            <field name="symptomes">Calendrier vaccinal</field>
+            <field name="diagnostic">Vaccins requis</field>
+            <field name="traitement">ROR + BCG</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_21" model="medical.consultation">
+            <field name="patient_id" ref="patient_6"/>
+            <field name="medecin_id" ref="medecin_4"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Suivi grossesse</field>
+            <field name="symptomes">Grossesse 24 semaines</field>
+            <field name="diagnostic">Grossesse évolutive</field>
+            <field name="traitement">Vitamines prénatales</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_22" model="medical.consultation">
+            <field name="patient_id" ref="patient_7"/>
+            <field name="medecin_id" ref="medecin_5"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Examen de peau</field>
+            <field name="symptomes">Lésions suspectes</field>
+            <field name="diagnostic">Kératose actinique</field>
+            <field name="traitement">Crème solaire</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_23" model="medical.consultation">
+            <field name="patient_id" ref="patient_8"/>
+            <field name="medecin_id" ref="medecin_6"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Examen de vue</field>
+            <field name="symptomes">Myopie progressive</field>
+            <field name="diagnostic">Cataracte débutante</field>
+            <field name="traitement">Chirurgie de la cataracte</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_24" model="medical.consultation">
+            <field name="patient_id" ref="patient_9"/>
+            <field name="medecin_id" ref="medecin_7"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Douleur articulaire</field>
+            <field name="symptomes">Arthrite genou</field>
+            <field name="diagnostic">Arthrose</field>
+            <field name="traitement">Anti-inflammatoires</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_25" model="medical.consultation">
+            <field name="patient_id" ref="patient_10"/>
+            <field name="medecin_id" ref="medecin_8"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Maux de tête fréquents</field>
+            <field name="symptomes">Céphalées tensionnelles</field>
+            <field name="diagnostic">Migraine avec aura</field>
+            <field name="traitement">Antimigraineux</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_26" model="medical.consultation">
+            <field name="patient_id" ref="patient_11"/>
+            <field name="medecin_id" ref="medecin_9"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Problèmes thyroïde</field>
+            <field name="symptomes">Fatigue + prise de poids</field>
+            <field name="diagnostic">Hyperthyroïdie</field>
+            <field name="traitement">Iode radioactif</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_27" model="medical.consultation">
+            <field name="patient_id" ref="patient_12"/>
+            <field name="medecin_id" ref="medecin_10"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Radio abdomen</field>
+            <field name="symptomes">Douleur abdominale</field>
+            <field name="diagnostic">Colite spasmodique</field>
+            <field name="traitement">Antispasmodiques</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <record id="consultation_28" model="medical.consultation">
+            <field name="patient_id" ref="patient_13"/>
+            <field name="medecin_id" ref="medecin_11"/>
+            <field name="date_consultation" eval="DateTime.now()"/>
+            <field name="motif">Consultation pré-opératoire</field>
+            <field name="symptomes">Évaluation chirurgicale</field>
+            <field name="diagnostic">Bon état général</field>
+            <field name="traitement">Préparation chirurgie</field>
+            <field name="state">terminee</field>
+        </record>
+        
+        <!-- 2 Prescriptions -->
+        <record id="prescription_1" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_1"/>
+            <field name="medicament">Paracétamol 500mg</field>
+            <field name="dosage">500mg</field>
+            <field name="posologie">1 comprimé en cas de douleur, maximum 3 par jour</field>
+            <field name="duree">7</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Prendre de préférence après les repas</field>
+        </record>
+        
+        <record id="prescription_2" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_2"/>
+            <field name="medicament">Bêtabloquants 25mg</field>
+            <field name="dosage">25mg</field>
+            <field name="posologie">1 comprimé le matin pendant 21 jours</field>
+            <field name="duree">21</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Surveiller la tension artérielle</field>
+        </record>
+
+                <!-- 26 Prescriptions supplémentaires (une pour chaque consultation sauf les 2 premières) -->
+        <record id="prescription_3" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_3"/>
+            <field name="medicament">Paracétamol sirop 100mg/5ml</field>
+            <field name="dosage">100mg/5ml</field>
+            <field name="posologie">5ml toutes les 6 heures si fièvre</field>
+            <field name="duree">5</field>
+            <field name="quantite">2</field>
+            <field name="type_medicament">sirop</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Bien agiter avant utilisation</field>
+        </record>
+        
+        <record id="prescription_4" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_4"/>
+            <field name="medicament">Ibuprofène 400mg</field>
+            <field name="dosage">400mg</field>
+            <field name="posologie">1 comprimé toutes les 8 heures pendant 3 jours</field>
+            <field name="duree">3</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Prendre au milieu des repas</field>
+        </record>
+        
+        <record id="prescription_5" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_5"/>
+            <field name="medicament">Crème corticoïde 1%</field>
+            <field name="dosage">1%</field>
+            <field name="posologie">Application fine couche 2 fois par jour</field>
+            <field name="duree">14</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">pommade</field>
+            <field name="voie_administration">cutanee</field>
+            <field name="instructions">Éviter le soleil pendant le traitement</field>
+        </record>
+        
+        <record id="prescription_6" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_6"/>
+            <field name="medicament">Lisinopril 10mg</field>
+            <field name="dosage">10mg</field>
+            <field name="posologie">1 comprimé le matin</field>
+            <field name="duree">30</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Surveiller la fonction rénale</field>
+        </record>
+        
+        <record id="prescription_7" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_7"/>
+            <field name="medicament">Metformine 850mg</field>
+            <field name="dosage">850mg</field>
+            <field name="posologie">1 comprimé au repas du matin et du soir</field>
+            <field name="duree">30</field>
+            <field name="quantite">2</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Surveiller la glycémie</field>
+        </record>
+        
+        <record id="prescription_8" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_8"/>
+            <field name="medicament">Ventoline inhalateur 100µg/dose</field>
+            <field name="dosage">100µg</field>
+            <field name="posologie">1-2 inhalations par jour en cas de crise</field>
+            <field name="duree">15</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Rincer la bouche après utilisation</field>
+        </record>
+        
+        <record id="prescription_9" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_9"/>
+            <field name="medicament">Photothérapie UV séances</field>
+            <field name="dosage">10 séances</field>
+            <field name="posologie">1 séance par semaine pendant 10 semaines</field>
+            <field name="duree">70</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Protection solaire obligatoire</field>
+        </record>
+        
+        <record id="prescription_10" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_10"/>
+            <field name="medicament">Supplémentation fer 325mg</field>
+            <field name="dosage">325mg</field>
+            <field name="posologie">1 gélule par jour pendant 3 mois</field>
+            <field name="duree">90</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">gelule</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Prendre pendant les repas</field>
+        </record>
+        
+        <record id="prescription_11" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_11"/>
+            <field name="medicament">Lunettes correctrices</field>
+            <field name="dosage">-2.00</field>
+            <field name="posologie">Porter quotidiennement</field>
+            <field name="duree">365</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Contrôle annuel recommandé</field>
+        </record>
+        
+        <record id="prescription_12" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_12"/>
+            <field name="medicament">Kinésithérapie séances</field>
+            <field name="dosage">20 séances</field>
+            <field name="posologie">3 séances par semaine pendant 6 semaines</field>
+            <field name="duree">42</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Exercices à domicile recommandés</field>
+        </record>
+        
+        <record id="prescription_13" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_13"/>
+            <field name="medicament">Triptans 50mg</field>
+            <field name="dosage">50mg</field>
+            <field name="posologie">1 comprimé au début de la crise</field>
+            <field name="duree">30</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Ne pas conduire pendant le traitement</field>
+        </record>
+        
+        <record id="prescription_14" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_14"/>
+            <field name="medicament">Levothyroxine 50µg</field>
+            <field name="dosage">50µg</field>
+            <field name="posologie">1 comprimé le matin à jeun</field>
+            <field name="duree">90</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Contrôle thyroïde tous les 3 mois</field>
+        </record>
+        
+        <record id="prescription_15" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_15"/>
+            <field name="medicament">Amoxicilline 1g</field>
+            <field name="dosage">1g</field>
+            <field name="posologie">1 injection IV par jour pendant 7 jours</field>
+            <field name="duree">7</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">injection</field>
+            <field name="voie_administration">intraveineuse</field>
+            <field name="instructions">Surveiller réactions allergiques</field>
+        </record>
+        
+        <record id="prescription_16" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_16"/>
+            <field name="medicament">Propofol 200mg</field>
+            <field name="dosage">200mg</field>
+            <field name="posologie">Administration anesthésique unique</field>
+            <field name="duree">1</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">injection</field>
+            <field name="voie_administration">intraveineuse</field>
+            <field name="instructions">Utilisation hospitalière uniquement</field>
+        </record>
+        
+        <record id="prescription_17" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_17"/>
+            <field name="medicament">Morphine 10mg</field>
+            <field name="dosage">10mg</field>
+            <field name="posologie">1 injection post-opératoire si douleur</field>
+            <field name="duree">3</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">injection</field>
+            <field name="voie_administration">intraveineuse</field>
+            <field name="instructions">Surveillance continue</field>
+        </record>
+        
+        <record id="prescription_18" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_18"/>
+            <field name="medicament">Vaccins combinés</field>
+            <field name="dosage">0.5ml</field>
+            <field name="posologie">1 injection IM</field>
+            <field name="duree">365</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">injection</field>
+            <field name="voie_administration">intramusculaire</field>
+            <field name="instructions">Carnet de vaccination à jour</field>
+        </record>
+        
+        <record id="prescription_19" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_19"/>
+            <field name="medicament">Métoprolol 50mg</field>
+            <field name="dosage">50mg</field>
+            <field name="posologie">1 comprimé 2 fois par jour</field>
+            <field name="duree">90</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">ECG de contrôle tous les 6 mois</field>
+        </record>
+        
+        <record id="prescription_20" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_20"/>
+            <field name="medicament">ROR vaccin</field>
+            <field name="dosage">0.5ml</field>
+            <field name="posologie">1 dose unique</field>
+            <field name="duree">1</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">injection</field>
+            <field name="voie_administration">intramusculaire</field>
+            <field name="instructions">Rappel à 6 mois</field>
+        </record>
+        
+        <record id="prescription_21" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_21"/>
+            <field name="medicament">Acide folique 400µg</field>
+            <field name="dosage">400µg</field>
+            <field name="posologie">1 comprimé par jour</field>
+            <field name="duree">270</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Pendant toute la grossesse</field>
+        </record>
+        
+        <record id="prescription_22" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_22"/>
+            <field name="medicament">Crème solaire SPF50</field>
+            <field name="dosage">SPF50</field>
+            <field name="posologie">Application 2 fois par jour</field>
+            <field name="duree">180</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">pommade</field>
+            <field name="voie_administration">cutanee</field>
+            <field name="instructions">Renouveler toutes les 2 heures</field>
+        </record>
+        
+        <record id="prescription_23" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_23"/>
+            <field name="medicament">Phacoémulsification</field>
+            <field name="dosage">Chirurgie</field>
+            <field name="posologie">Intervention unique</field>
+            <field name="duree">1</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Port de lentilles post-opératoire</field>
+        </record>
+        
+        <record id="prescription_24" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_24"/>
+            <field name="medicament">Diclofénac 75mg</field>
+            <field name="dosage">75mg</field>
+            <field name="posologie">1 comprimé 2 fois par jour</field>
+            <field name="duree">30</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Arrêter en cas de douleur gastrique</field>
+        </record>
+        
+        <record id="prescription_25" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_25"/>
+            <field name="medicament">Sumatriptan 100mg</field>
+            <field name="dosage">100mg</field>
+            <field name="posologie">1 comprimé au début de la crise</field>
+            <field name="duree">30</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Maximum 2 comprimés par jour</field>
+        </record>
+        
+        <record id="prescription_26" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_26"/>
+            <field name="medicament">Iode 131</field>
+            <field name="dosage">100mCi</field>
+            <field name="posologie">Traitement unique</field>
+            <field name="duree">1</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Protection thyroïde nécessaire</field>
+        </record>
+        
+        <record id="prescription_27" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_27"/>
+            <field name="medicament">Spasfonol 40mg</field>
+            <field name="dosage">40mg</field>
+            <field name="posologie">1 comprimé 3 fois par jour</field>
+            <field name="duree">14</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">comprime</field>
+            <field name="voie_administration">orale</field>
+            <field name="instructions">Pendant les repas</field>
+        </record>
+        
+        <record id="prescription_28" model="medical.prescription">
+            <field name="consultation_id" ref="consultation_28"/>
+            <field name="medicament">Préparation chirurgicale</field>
+            <field name="dosage">Pré-op</field>
+            <field name="posologie">Évaluation complète</field>
+            <field name="duree">1</field>
+            <field name="quantite">1</field>
+            <field name="type_medicament">autre</field>
+            <field name="voie_administration">autre</field>
+            <field name="instructions">Jeûne 12h avant intervention</field>
+        </record>
+        
+    </data>
+</odoo>
+

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue Liste des Prescriptions -->
+        <record id="view_medical_prescription_tree" model="ir.ui.view">
+            <field name="name">medical.prescription.tree</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <tree string="Prescriptions" default_order="date_prescription desc">
+                    <field name="consultation_id" string="Consultation"/>
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="medicament" string="Médicament"/>
+                    <field name="dosage" string="Dosage"/>
+                    <field name="posologie" string="Posologie"/>
+                    <field name="duree" string="Durée (jours)"/>
+                    <field name="quantite" string="Quantité"/>
+                    <field name="type_medicament" string="Type" widget="badge"/>
+                    <field name="voie_administration" string="Voie" widget="badge"/>
+                    <field name="date_prescription" string="Date" widget="datetime"/>
+                    <field name="active" string="Active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue de Recherche -->
+        <record id="view_medical_prescription_search" model="ir.ui.view">
+            <field name="name">medical.prescription.search</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <search string="Recherche Prescriptions">
+                    <field name="medicament" string="Médicament"/>
+                    <field name="patient_id" string="Patient"/>
+                    <field name="medecin_id" string="Médecin"/>
+                    <field name="consultation_id" string="Consultation"/>
+                    <field name="date_prescription" string="Date"/>
+                    
+                    <!-- Filtres temporels -->
+                    <filter string="Aujourd'hui" name="today" domain="[('date_prescription', '>=', context_today())]"/>
+                    <filter string="Cette semaine" name="this_week" domain="[('date_prescription', '>=', context_today() - datetime.timedelta(days=7))]"/>
+                    <filter string="Ce mois" name="this_month" domain="[('date_prescription', '>=', context_today().replace(day=1))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par type -->
+                    <filter string="Comprimés" name="comprime" domain="[('type_medicament', '=', 'comprime')]"/>
+                    <filter string="Gélules" name="gelule" domain="[('type_medicament', '=', 'gelule')]"/>
+                    <filter string="Sirops" name="sirop" domain="[('type_medicament', '=', 'sirop')]"/>
+                    <filter string="Injections" name="injection" domain="[('type_medicament', '=', 'injection')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par voie -->
+                    <filter string="Voie orale" name="orale" domain="[('voie_administration', '=', 'orale')]"/>
+                    <filter string="Intraveineuse" name="intraveineuse" domain="[('voie_administration', '=', 'intraveineuse')]"/>
+                    <filter string="Intramusculaire" name="intramusculaire" domain="[('voie_administration', '=', 'intramusculaire')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtres par état -->
+                    <filter string="Actives" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactives" name="inactive" domain="[('active', '=', False)]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Groupements -->
+                    <group expand="0" string="Grouper par:">
+                        <filter string="Patient" name="patient_group" context="{'group_by': 'patient_id'}"/>
+                        <filter string="Médecin" name="medecin_group" context="{'group_by': 'medecin_id'}"/>
+                        <filter string="Consultation" name="consultation_group" context="{'group_by': 'consultation_id'}"/>
+                        <filter string="Type médicament" name="type_group" context="{'group_by': 'type_medicament'}"/>
+                        <filter string="Voie" name="voie_group" context="{'group_by': 'voie_administration'}"/>
+                        <filter string="Date" name="date_group" context="{'group_by': 'date_prescription:day'}"/>
+                        <filter string="Mois" name="month_group" context="{'group_by': 'date_prescription:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vue Formulaire -->
+        <record id="view_medical_prescription_form" model="ir.ui.view">
+            <field name="name">medical.prescription.form</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <form string="Prescription Médicale">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="medicament" required="1" placeholder="Nom du médicament"/>
+                            </h1>
+                            <h3>
+                                <field name="consultation_id" readonly="1" placeholder="Consultation associée"/>
+                            </h3>
+                            <div class="oe_subtitle">
+                                <span class="badge badge-pill badge-primary">
+                                    <field name="type_medicament"/>
+                                </span>
+                                <span class="badge badge-pill badge-info">
+                                    <field name="voie_administration"/>
+                                </span>
+                                <span class="badge badge-pill badge-warning">
+                                    <field name="duree"/> jours
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <group>
+                            <group name="info_medicament" string="Informations du Médicament">
+                                <field name="medicament" required="1" placeholder="Nom du médicament"/>
+                                <field name="dosage" placeholder="Dosage (ex: 500mg, 1g)"/>
+                                <field name="type_medicament" widget="selection"/>
+                                <field name="voie_administration" widget="selection"/>
+                            </group>
+                            <group name="traitement" string="Traitement">
+                                <field name="posologie" required="1" placeholder="Comment prendre le médicament"/>
+                                <field name="duree" placeholder="Durée en jours"/>
+                                <field name="quantite" placeholder="Quantité prescrite"/>
+                                <field name="date_prescription" required="1" widget="datetime"/>
+                                <field name="active" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Informations Complémentaires" name="complements">
+                                <group>
+                                    <field name="consultation_id" readonly="1"/>
+                                    <field name="patient_id" readonly="1"/>
+                                    <field name="medecin_id" readonly="1"/>
+                                    <field name="instructions" placeholder="Instructions particulières pour le patient"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue Kanban -->
+        <record id="view_medical_prescription_kanban" model="ir.ui.view">
+            <field name="name">medical.prescription.kanban</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column" default_group_by="type_medicament">
+                    <field name="medicament"/>
+                    <field name="dosage"/>
+                    <field name="posologie"/>
+                    <field name="duree"/>
+                    <field name="quantite"/>
+                    <field name="type_medicament"/>
+                    <field name="voie_administration"/>
+                    <field name="patient_id"/>
+                    <field name="medecin_id"/>
+                    <field name="consultation_id"/>
+                    <field name="date_prescription"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="medicament"/>
+                                        </strong>
+                                        <span class="o_kanban_record_subtitle text-muted">
+                                            <field name="patient_id"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="badge badge-primary mb-2">
+                                        <field name="type_medicament"/>
+                                    </div>
+                                    <div class="badge badge-info mb-2">
+                                        <field name="voie_administration"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-pills"/>
+                                        <field name="dosage"/> - <field name="posologie"/>
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-clock-o"/>
+                                        <field name="duree"/> jours
+                                    </div>
+                                    <div class="text-muted mb-2">
+                                        <i class="fa fa-user-md"/>
+                                        <field name="medecin_id"/>
+                                    </div>
+                                    <div class="text-muted" t-if="record.active.value">
+                                        <i class="fa fa-check-circle text-success"/>
+                                        Active
+                                    </div>
+                                </div>
+                                <div class="o_kanban_manage_button_section o_kanban_manage_view">
+                                    <a type="edit" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-pencil"/>
+                                    </a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Vue Graphique -->
+        <record id="view_medical_prescription_graph" model="ir.ui.view">
+            <field name="name">medical.prescription.graph</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <graph string="Statistiques des Prescriptions">
+                    <field name="medecin_id" type="row"/>
+                    <field name="type_medicament" type="col"/>
+                    <field name="date_prescription" interval="month" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Vue Pivot -->
+        <record id="view_medical_prescription_pivot" model="ir.ui.view">
+            <field name="name">medical.prescription.pivot</field>
+            <field name="model">medical.prescription</field>
+            <field name="arch" type="xml">
+                <pivot string="Analyse des Prescriptions">
+                    <field name="medecin_id" type="row"/>
+                    <field name="patient_id" type="row"/>
+                    <field name="type_medicament" type="col"/>
+                    <field name="voie_administration" type="col"/>
+                    <field name="date_prescription" interval="month" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Action principale -->
+        <record id="action_medical_prescription" model="ir.actions.act_window">
+            <field name="name">Prescriptions</field>
+            <field name="res_model">medical.prescription</field>
+            <field name="view_mode">tree,form,kanban,graph,pivot</field>
+            <field name="view_id" ref="view_medical_prescription_kanban"/>
+            <field name="search_view_id" ref="view_medical_prescription_search"/>
+            <field name="context">{
+                'default_order': 'date_prescription desc',
+                'group_by': ['type_medicament']
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre première prescription
+                </p>
+                <p>
+                    Gérez les prescriptions médicales avec types et voies d'administration
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

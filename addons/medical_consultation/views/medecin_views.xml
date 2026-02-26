@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vue Liste des Médecins -->
+        <record id="view_medical_medecin_tree" model="ir.ui.view">
+            <field name="name">medical.medecin.tree</field>
+            <field name="model">medical.medecin</field>
+            <field name="arch" type="xml">
+                <tree string="Médecins" default_order="specialite asc, name asc">
+                    <field name="name" string="Nom Complet"/>
+                    <field name="prenoms" string="Prénoms" optional="show"/>
+                    <field name="specialite" string="Spécialité" widget="badge"/>
+                    <field name="telephone" string="Téléphone" widget="phone" optional="show"/>
+                    <field name="email" string="Email" widget="email" optional="show"/>
+                    <field name="tarif_consultation" string="Tarif (FCFA)" widget="monetary" sum="Total Tarifs"/>
+                    <field name="partner_id" string="Contact associé" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action pour les Médecins -->
+        <record id="action_medical_medecin" model="ir.actions.act_window">
+            <field name="name">Médecins</field>
+            <field name="res_model">medical.medecin</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="view_medical_medecin_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créez votre premier médecin
+                </p>
+                <p>
+                    Gérez les informations professionnelles des médecins
+                </p>
+            </field>
+        </record>
+
+        <!-- Vue Formulaire des Médecins -->
+        <record id="view_medical_medecin_form" model="ir.ui.view">
+            <field name="name">medical.medecin.form</field>
+            <field name="model">medical.medecin</field>
+            <field name="arch" type="xml">
+                <form string="Médecin">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nom du médecin" required="1"/>
+                            </h1>
+                            <h2>
+                                <field name="prenoms" placeholder="Prénoms du médecin"/>
+                            </h2>
+                            <div class="oe_subtitle">
+                                <span class="badge badge-pill badge-primary">
+                                    <field name="specialite"/>
+                                </span>
+                                <span class="badge badge-pill badge-success">
+                                    <field name="tarif_consultation"/> FCFA
+                                </span>
+                            </div>
+                        </div>
+                        <group>
+                            <group name="info_generales">
+                                <field name="name" required="1"/>
+                                <field name="prenoms"/>
+                                <field name="specialite" required="1"/>
+                                <field name="numero_rpps" placeholder="Numéro RPPS"/>
+                                <field name="numero_adeli" placeholder="Numéro ADELI"/>
+                                <field name="tarif_consultation"/>
+                            </group>
+                            <group name="contact">
+                                <field name="telephone"/>
+                                <field name="email"/>
+                                <field name="partner_id" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Informations Professionnelles">
+                                <group>
+                                    <field name="specialite"/>
+                                    <field name="numero_rpps"/>
+                                    <field name="numero_adeli"/>
+                                    <field name="tarif_consultation"/>
+                                </group>
+                            </page>
+                            <page string="Contact">
+                                <group>
+                                    <field name="partner_id" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vue Kanban des Médecins -->
+        <record id="view_medical_medecin_kanban" model="ir.ui.view">
+            <field name="name">medical.medecin.kanban</field>
+            <field name="model">medical.medecin</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="prenoms"/>
+                    <field name="specialite"/>
+                    <field name="telephone"/>
+                    <field name="tarif_consultation"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            Dr <field name="name"/> <field name="prenoms"/>
+                                        </strong>
+                                        <span class="o_kanban_record_subtitle text-muted">
+                                            <field name="specialite"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="badge badge-primary">
+                                        <field name="specialite"/>
+                                    </div>
+                                    <div class="text-muted">
+                                        <i class="fa fa-phone"/>
+                                        <field name="telephone"/>
+                                    </div>
+                                    <div class="text-success">
+                                        <i class="fa fa-money"/>
+                                        <field name="tarif_consultation"/> FCFA
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>
