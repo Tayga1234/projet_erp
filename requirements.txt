@@ -1,0 +1,9 @@
+# Requirements pour le module médical Odoo
+# Dépendances Python supplémentaires si nécessaire
+
+# Pour le moment, aucune dépendance supplémentaire n'est requise
+# Odoo 16 inclut toutes les dépendances de base
+
+# Si vous ajoutez des dépendances futures, ajoutez-les ici :
+# example-package==1.0.0
+# another-package==2.1.0
